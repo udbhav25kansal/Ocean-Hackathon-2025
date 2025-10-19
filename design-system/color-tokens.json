@@ -1,0 +1,298 @@
+{
+  "color": {
+    "primary": {
+      "050": "#FFFCF0",
+      "100": "#FFF9D9",
+      "200": "#FFF3B3",
+      "300": "#FFED8C",
+      "400": "#F7E21B",
+      "500": "#E1C317",
+      "600": "#C9AC14",
+      "700": "#A68F11",
+      "800": "#7A6A0C",
+      "900": "#4D4307",
+      "contrast": "#0B1E3A"
+    },
+    "secondary": {
+      "050": "#E6F7FF",
+      "100": "#C2EBFF",
+      "200": "#99DEFF",
+      "300": "#70D1FF",
+      "400": "#3DB5FF",
+      "500": "#1E9FED",
+      "600": "#1888D1",
+      "700": "#1470B3",
+      "800": "#0F5689",
+      "900": "#0A3D5F"
+    },
+    "tertiary": {
+      "050": "#FFE9E9",
+      "100": "#FFCCCC",
+      "200": "#FFB3B3",
+      "300": "#FF9999",
+      "400": "#FF6F6F",
+      "500": "#FF4D4D",
+      "600": "#E63946",
+      "700": "#CC2936",
+      "800": "#991F28",
+      "900": "#66141A"
+    },
+    "accent": {
+      "jellyfish": {
+        "050": "#F5EBFF",
+        "100": "#E8D4FF",
+        "200": "#DABDFF",
+        "300": "#CDA6FF",
+        "400": "#C58CFF",
+        "500": "#B36FFF",
+        "600": "#9F52FF",
+        "700": "#8533E6",
+        "800": "#6526AD",
+        "900": "#451A73"
+      },
+      "seaweed": {
+        "050": "#E6F9F0",
+        "100": "#B8F0DA",
+        "200": "#8AE7C4",
+        "300": "#5CDEAE",
+        "400": "#2BB673",
+        "500": "#24A063",
+        "600": "#1F8A54",
+        "700": "#1A7345",
+        "800": "#145636",
+        "900": "#0D3924"
+      }
+    },
+    "neutral": {
+      "025": "#F6FBFD",
+      "050": "#EAF2F7",
+      "100": "#D7E3EC",
+      "200": "#B8C7D5",
+      "300": "#8FA3B7",
+      "400": "#6B7C8F",
+      "500": "#516171",
+      "600": "#3A4752",
+      "700": "#2C3A47",
+      "800": "#1E2A36",
+      "900": "#0F1419"
+    },
+    "feedback": {
+      "success": {
+        "light": "#2BB673",
+        "dark": "#5CDEAE",
+        "bg": "#E6F9F0",
+        "border": "#8AE7C4"
+      },
+      "warning": {
+        "light": "#FFCC33",
+        "dark": "#FFE066",
+        "bg": "#FFF9E6",
+        "border": "#FFE699"
+      },
+      "error": {
+        "light": "#E63946",
+        "dark": "#FF6F6F",
+        "bg": "#FFE9E9",
+        "border": "#FFB3B3"
+      },
+      "info": {
+        "light": "#3DB5FF",
+        "dark": "#70D1FF",
+        "bg": "#E6F7FF",
+        "border": "#99DEFF"
+      }
+    },
+    "gradients": {
+      "sunlitWater": {
+        "start": "#FFED8C",
+        "end": "#3DB5FF"
+      },
+      "lagoon": {
+        "start": "#1E9FED",
+        "end": "#C58CFF"
+      },
+      "tropical": {
+        "start": "#F7E21B",
+        "end": "#2BB673"
+      },
+      "coral": {
+        "start": "#FF6F6F",
+        "end": "#FFCC33"
+      }
+    },
+    "semantic": {
+      "light": {
+        "bg": {
+          "primary": "#F6FBFD",
+          "secondary": "#EAF2F7",
+          "tertiary": "#FFFFFF",
+          "elevated": "#FFFFFF"
+        },
+        "surface": {
+          "primary": "#FFFFFF",
+          "secondary": "#EAF2F7",
+          "tertiary": "#D7E3EC",
+          "overlay": "rgba(11, 30, 58, 0.08)"
+        },
+        "text": {
+          "primary": "#1E2A36",
+          "secondary": "#516171",
+          "tertiary": "#6B7C8F",
+          "inverse": "#FFFFFF",
+          "onPrimary": "#0B1E3A",
+          "onSecondary": "#FFFFFF",
+          "link": "#1888D1"
+        },
+        "border": {
+          "primary": "#D7E3EC",
+          "secondary": "#B8C7D5",
+          "focus": "#3DB5FF",
+          "error": "#E63946",
+          "success": "#2BB673"
+        },
+        "interactive": {
+          "primary": {
+            "default": "#F7E21B",
+            "hover": "#E1C317",
+            "active": "#C9AC14",
+            "disabled": "rgba(247, 226, 27, 0.4)"
+          },
+          "secondary": {
+            "default": "#3DB5FF",
+            "hover": "#1E9FED",
+            "active": "#1888D1",
+            "disabled": "rgba(61, 181, 255, 0.4)"
+          }
+        }
+      },
+      "dark": {
+        "bg": {
+          "primary": "#0B1E3A",
+          "secondary": "#112A4B",
+          "tertiary": "#1A3454",
+          "elevated": "#1F3D5D"
+        },
+        "surface": {
+          "primary": "#112A4B",
+          "secondary": "#1A3454",
+          "tertiary": "#244667",
+          "overlay": "rgba(255, 255, 255, 0.08)"
+        },
+        "text": {
+          "primary": "#EAF2F7",
+          "secondary": "#B8C7D5",
+          "tertiary": "#8FA3B7",
+          "inverse": "#0B1E3A",
+          "onPrimary": "#0B1E3A",
+          "onSecondary": "#FFFFFF",
+          "link": "#70D1FF"
+        },
+        "border": {
+          "primary": "#3A4752",
+          "secondary": "#516171",
+          "focus": "#70D1FF",
+          "error": "#FF6F6F",
+          "success": "#5CDEAE"
+        },
+        "interactive": {
+          "primary": {
+            "default": "#FFED8C",
+            "hover": "#FFF3B3",
+            "active": "#FFF9D9",
+            "disabled": "rgba(255, 237, 140, 0.4)"
+          },
+          "secondary": {
+            "default": "#3DB5FF",
+            "hover": "#70D1FF",
+            "active": "#99DEFF",
+            "disabled": "rgba(61, 181, 255, 0.4)"
+          }
+        }
+      }
+    },
+    "states": {
+      "hover": {
+        "opacityAdjust": 0.08,
+        "scaleAdjust": "darken by 8%"
+      },
+      "active": {
+        "opacityAdjust": 0.12,
+        "scaleAdjust": "darken by 12%"
+      },
+      "focus": {
+        "ring": {
+          "width": "2px",
+          "color": {
+            "light": "#3DB5FF",
+            "dark": "#70D1FF"
+          },
+          "offset": "2px"
+        }
+      },
+      "disabled": {
+        "opacity": 0.4,
+        "cursor": "not-allowed"
+      }
+    }
+  },
+  "accessibility": {
+    "contrast": {
+      "AA": {
+        "normalText": 4.5,
+        "largeText": 3.0,
+        "ui": 3.0
+      },
+      "AAA": {
+        "normalText": 7.0,
+        "largeText": 4.5
+      }
+    },
+    "compliantPairs": {
+      "light": [
+        { "fg": "#0B1E3A", "bg": "#FFFFFF", "ratio": 15.5, "pass": "AAA" },
+        { "fg": "#1E2A36", "bg": "#FFFFFF", "ratio": 13.8, "pass": "AAA" },
+        { "fg": "#0B1E3A", "bg": "#F7E21B", "ratio": 8.2, "pass": "AAA" },
+        { "fg": "#1E2A36", "bg": "#F7E21B", "ratio": 7.4, "pass": "AAA" },
+        { "fg": "#0B1E3A", "bg": "#3DB5FF", "ratio": 4.8, "pass": "AA" },
+        { "fg": "#FFFFFF", "bg": "#1888D1", "ratio": 4.5, "pass": "AA" },
+        { "fg": "#FFFFFF", "bg": "#E63946", "ratio": 5.1, "pass": "AA" },
+        { "fg": "#FFFFFF", "bg": "#2BB673", "ratio": 4.7, "pass": "AA" },
+        { "fg": "#516171", "bg": "#FFFFFF", "ratio": 5.2, "pass": "AA" },
+        { "fg": "#0B1E3A", "bg": "#EAF2F7", "ratio": 13.1, "pass": "AAA" }
+      ],
+      "dark": [
+        { "fg": "#EAF2F7", "bg": "#0B1E3A", "ratio": 13.1, "pass": "AAA" },
+        { "fg": "#B8C7D5", "bg": "#0B1E3A", "ratio": 8.9, "pass": "AAA" },
+        { "fg": "#0B1E3A", "bg": "#FFED8C", "ratio": 10.1, "pass": "AAA" },
+        { "fg": "#0B1E3A", "bg": "#70D1FF", "ratio": 6.8, "pass": "AAA" },
+        { "fg": "#EAF2F7", "bg": "#112A4B", "ratio": 11.2, "pass": "AAA" },
+        { "fg": "#FFFFFF", "bg": "#1888D1", "ratio": 4.5, "pass": "AA" },
+        { "fg": "#FFFFFF", "bg": "#2BB673", "ratio": 4.7, "pass": "AA" },
+        { "fg": "#8FA3B7", "bg": "#0B1E3A", "ratio": 6.1, "pass": "AA" },
+        { "fg": "#70D1FF", "bg": "#0B1E3A", "ratio": 6.8, "pass": "AAA" },
+        { "fg": "#5CDEAE", "bg": "#112A4B", "ratio": 7.3, "pass": "AAA" }
+      ],
+      "failingPairs": [
+        { "fg": "#F7E21B", "bg": "#FFFFFF", "ratio": 1.9, "pass": "FAIL", "alternative": "Use #0B1E3A text on #F7E21B (8.2:1)" },
+        { "fg": "#FFCC33", "bg": "#FFFFFF", "ratio": 1.7, "pass": "FAIL", "alternative": "Use #0B1E3A text on #FFCC33 (9.1:1)" },
+        { "fg": "#FF6F6F", "bg": "#0B1E3A", "ratio": 2.8, "pass": "FAIL", "alternative": "Use #FFFFFF text on #E63946 (5.1:1)" },
+        { "fg": "#C58CFF", "bg": "#FFFFFF", "ratio": 2.6, "pass": "FAIL", "alternative": "Use #451A73 text instead (7.8:1)" },
+        { "fg": "#6B7C8F", "bg": "#516171", "ratio": 1.8, "pass": "FAIL", "alternative": "Use #EAF2F7 on #516171 (5.2:1)" }
+      ]
+    }
+  },
+  "usage": {
+    "primary": "CTAs, primary buttons, key brand moments (Sponge Yellow)",
+    "secondary": "Links, secondary buttons, informational elements (Seafoam Blue)",
+    "tertiary": "Highlights, alerts, important badges (Coral)",
+    "accentJellyfish": "Special highlights, premium features, playful accents",
+    "accentSeaweed": "Success states, positive confirmations, growth metrics",
+    "neutrals": "Text, borders, backgrounds, structural elements",
+    "gradients": {
+      "sunlitWater": "Hero sections, primary feature cards",
+      "lagoon": "Interactive zones, hover states",
+      "tropical": "Success flows, positive momentum",
+      "coral": "Warning flows, attention-grabbing moments"
+    }
+  }
+}

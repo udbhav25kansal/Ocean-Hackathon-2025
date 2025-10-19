@@ -259,7 +259,7 @@ class LiveOceanData:
 
         print("\n" + "="*70)
         print(
-            f"🔄 FETCHING LIVE DATA - {datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S UTC')}")
+            f"FETCHING LIVE DATA - {datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S UTC')}")
         print("="*70)
 
         buoy = self.get_latest_buoy_data()
@@ -282,7 +282,7 @@ class LiveOceanData:
             'is_spring_freshet': int(datetime.utcnow().month in [5, 6, 7])
         }
 
-        print(f"\n✅ Data fetched successfully:")
+        print(f"\nData fetched successfully:")
         print(
             f"   Wind: {combined['wind_speed']:.1f} km/h @ {combined['wind_dir']:.0f}°")
         print(
@@ -316,4 +316,4 @@ if __name__ == '__main__':
     print("4. Testing combined data:")
     combined = fetcher.get_all_live_data()
 
-    print("\n✅ All tests complete!")
+    print("\nAll tests complete!")

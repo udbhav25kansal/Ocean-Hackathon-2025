@@ -21,7 +21,12 @@ st.set_page_config(
     page_title="🧽 Bikini Bottom Current Classifier 🍍",
     page_icon="🧽",
     layout="wide",
-    initial_sidebar_state="collapsed"
+    initial_sidebar_state="collapsed",
+    menu_items={
+        'Get Help': None,
+        'Report a bug': None,
+        'About': "🌊 Bikini Bottom Current Classifier - OceanHack 2025 🍍"
+    }
 )
 
 # MAXIMUM SPONGEBOB CSS
@@ -29,12 +34,32 @@ st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Titan+One&family=Comic+Neue:wght@700&family=Fredoka+One&display=swap');
     
+    /* Force light ocean theme */
+    [data-theme="dark"] .stApp,
     .stApp {
-        background: linear-gradient(180deg, #87CEEB 0%, #4A90E2 30%, #2E5C8A 60%, #1a3a52 100%);
-        background-image: 
+        background: linear-gradient(180deg, #87CEEB 0%, #4A90E2 30%, #2E5C8A 60%, #1a3a52 100%) !important;
+        background-attachment: fixed !important;
+    }
+
+    [data-theme="dark"] .stApp::before,
+    .stApp::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image:
             radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
             radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.15) 0%, transparent 50%),
             radial-gradient(circle at 40% 40%, rgba(255, 255, 255, 0.1) 0%, transparent 30%);
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    .main .block-container {
+        position: relative;
+        z-index: 1;
     }
     
     .main-title {

@@ -1,0 +1,404 @@
+/**
+ * Bikini Bottom Ocean Classifier - Color System
+ * Inspired by tropical seas, coral reefs, sunny beaches, and jellyfish fields
+ * WCAG 2.1 AA compliant color tokens for light and dark modes
+ */
+
+/* ============================================
+   LIGHT MODE (Default)
+   ============================================ */
+
+:root,
+[data-theme="light"] {
+  /* Primary - Sponge Yellow */
+  --color-primary-050: #FFFCF0;
+  --color-primary-100: #FFF9D9;
+  --color-primary-200: #FFF3B3;
+  --color-primary-300: #FFED8C;
+  --color-primary-400: #F7E21B;
+  --color-primary-500: #E1C317;
+  --color-primary-600: #C9AC14;
+  --color-primary-700: #A68F11;
+  --color-primary-800: #7A6A0C;
+  --color-primary-900: #4D4307;
+  --color-primary-contrast: #0B1E3A;
+
+  /* Secondary - Seafoam Blue */
+  --color-secondary-050: #E6F7FF;
+  --color-secondary-100: #C2EBFF;
+  --color-secondary-200: #99DEFF;
+  --color-secondary-300: #70D1FF;
+  --color-secondary-400: #3DB5FF;
+  --color-secondary-500: #1E9FED;
+  --color-secondary-600: #1888D1;
+  --color-secondary-700: #1470B3;
+  --color-secondary-800: #0F5689;
+  --color-secondary-900: #0A3D5F;
+
+  /* Tertiary - Coral */
+  --color-tertiary-050: #FFE9E9;
+  --color-tertiary-100: #FFCCCC;
+  --color-tertiary-200: #FFB3B3;
+  --color-tertiary-300: #FF9999;
+  --color-tertiary-400: #FF6F6F;
+  --color-tertiary-500: #FF4D4D;
+  --color-tertiary-600: #E63946;
+  --color-tertiary-700: #CC2936;
+  --color-tertiary-800: #991F28;
+  --color-tertiary-900: #66141A;
+
+  /* Accent - Jellyfish Lavender */
+  --color-jellyfish-050: #F5EBFF;
+  --color-jellyfish-100: #E8D4FF;
+  --color-jellyfish-200: #DABDFF;
+  --color-jellyfish-300: #CDA6FF;
+  --color-jellyfish-400: #C58CFF;
+  --color-jellyfish-500: #B36FFF;
+  --color-jellyfish-600: #9F52FF;
+  --color-jellyfish-700: #8533E6;
+  --color-jellyfish-800: #6526AD;
+  --color-jellyfish-900: #451A73;
+
+  /* Accent - Seaweed Green */
+  --color-seaweed-050: #E6F9F0;
+  --color-seaweed-100: #B8F0DA;
+  --color-seaweed-200: #8AE7C4;
+  --color-seaweed-300: #5CDEAE;
+  --color-seaweed-400: #2BB673;
+  --color-seaweed-500: #24A063;
+  --color-seaweed-600: #1F8A54;
+  --color-seaweed-700: #1A7345;
+  --color-seaweed-800: #145636;
+  --color-seaweed-900: #0D3924;
+
+  /* Neutrals - Barnacle Greys → Foam */
+  --color-neutral-025: #F6FBFD;
+  --color-neutral-050: #EAF2F7;
+  --color-neutral-100: #D7E3EC;
+  --color-neutral-200: #B8C7D5;
+  --color-neutral-300: #8FA3B7;
+  --color-neutral-400: #6B7C8F;
+  --color-neutral-500: #516171;
+  --color-neutral-600: #3A4752;
+  --color-neutral-700: #2C3A47;
+  --color-neutral-800: #1E2A36;
+  --color-neutral-900: #0F1419;
+
+  /* Feedback */
+  --color-success: #2BB673;
+  --color-success-bg: #E6F9F0;
+  --color-success-border: #8AE7C4;
+
+  --color-warning: #FFCC33;
+  --color-warning-bg: #FFF9E6;
+  --color-warning-border: #FFE699;
+
+  --color-error: #E63946;
+  --color-error-bg: #FFE9E9;
+  --color-error-border: #FFB3B3;
+
+  --color-info: #3DB5FF;
+  --color-info-bg: #E6F7FF;
+  --color-info-border: #99DEFF;
+
+  /* Gradients */
+  --gradient-sunlit-water: linear-gradient(135deg, #FFED8C 0%, #3DB5FF 100%);
+  --gradient-lagoon: linear-gradient(135deg, #1E9FED 0%, #C58CFF 100%);
+  --gradient-tropical: linear-gradient(135deg, #F7E21B 0%, #2BB673 100%);
+  --gradient-coral: linear-gradient(135deg, #FF6F6F 0%, #FFCC33 100%);
+
+  /* Semantic Tokens - Light Mode */
+  --bg-primary: #F6FBFD;
+  --bg-secondary: #EAF2F7;
+  --bg-tertiary: #FFFFFF;
+  --bg-elevated: #FFFFFF;
+
+  --surface-primary: #FFFFFF;
+  --surface-secondary: #EAF2F7;
+  --surface-tertiary: #D7E3EC;
+  --surface-overlay: rgba(11, 30, 58, 0.08);
+
+  --text-primary: #1E2A36;
+  --text-secondary: #516171;
+  --text-tertiary: #6B7C8F;
+  --text-inverse: #FFFFFF;
+  --text-on-primary: #0B1E3A;
+  --text-on-secondary: #FFFFFF;
+  --text-link: #1888D1;
+  --text-link-hover: #1470B3;
+
+  --border-primary: #D7E3EC;
+  --border-secondary: #B8C7D5;
+  --border-focus: #3DB5FF;
+  --border-error: #E63946;
+  --border-success: #2BB673;
+
+  /* Interactive States - Light Mode */
+  --interactive-primary: #F7E21B;
+  --interactive-primary-hover: #E1C317;
+  --interactive-primary-active: #C9AC14;
+  --interactive-primary-disabled: rgba(247, 226, 27, 0.4);
+
+  --interactive-secondary: #3DB5FF;
+  --interactive-secondary-hover: #1E9FED;
+  --interactive-secondary-active: #1888D1;
+  --interactive-secondary-disabled: rgba(61, 181, 255, 0.4);
+
+  /* Focus Ring */
+  --focus-ring-color: #3DB5FF;
+  --focus-ring-width: 2px;
+  --focus-ring-offset: 2px;
+  --focus-ring: 0 0 0 var(--focus-ring-width) var(--focus-ring-color);
+  --focus-ring-offset-shadow: 0 0 0 var(--focus-ring-offset) transparent;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(11, 30, 58, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(11, 30, 58, 0.1), 0 2px 4px -1px rgba(11, 30, 58, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(11, 30, 58, 0.1), 0 4px 6px -2px rgba(11, 30, 58, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(11, 30, 58, 0.1), 0 10px 10px -5px rgba(11, 30, 58, 0.04);
+  --shadow-2xl: 0 25px 50px -12px rgba(11, 30, 58, 0.25);
+}
+
+
+/* ============================================
+   DARK MODE
+   ============================================ */
+
+[data-theme="dark"] {
+  /* Primary - Sponge Yellow (lighter in dark mode) */
+  --color-primary-050: #FFFCF0;
+  --color-primary-100: #FFF9D9;
+  --color-primary-200: #FFF3B3;
+  --color-primary-300: #FFED8C;
+  --color-primary-400: #F7E21B;
+  --color-primary-500: #E1C317;
+  --color-primary-600: #C9AC14;
+  --color-primary-700: #A68F11;
+  --color-primary-800: #7A6A0C;
+  --color-primary-900: #4D4307;
+  --color-primary-contrast: #0B1E3A;
+
+  /* Secondary - Seafoam Blue (brighter in dark) */
+  --color-secondary-050: #E6F7FF;
+  --color-secondary-100: #C2EBFF;
+  --color-secondary-200: #99DEFF;
+  --color-secondary-300: #70D1FF;
+  --color-secondary-400: #3DB5FF;
+  --color-secondary-500: #1E9FED;
+  --color-secondary-600: #1888D1;
+  --color-secondary-700: #1470B3;
+  --color-secondary-800: #0F5689;
+  --color-secondary-900: #0A3D5F;
+
+  /* Tertiary - Coral (softer in dark) */
+  --color-tertiary-050: #FFE9E9;
+  --color-tertiary-100: #FFCCCC;
+  --color-tertiary-200: #FFB3B3;
+  --color-tertiary-300: #FF9999;
+  --color-tertiary-400: #FF6F6F;
+  --color-tertiary-500: #FF4D4D;
+  --color-tertiary-600: #E63946;
+  --color-tertiary-700: #CC2936;
+  --color-tertiary-800: #991F28;
+  --color-tertiary-900: #66141A;
+
+  /* Accent - Jellyfish Lavender */
+  --color-jellyfish-050: #F5EBFF;
+  --color-jellyfish-100: #E8D4FF;
+  --color-jellyfish-200: #DABDFF;
+  --color-jellyfish-300: #CDA6FF;
+  --color-jellyfish-400: #C58CFF;
+  --color-jellyfish-500: #B36FFF;
+  --color-jellyfish-600: #9F52FF;
+  --color-jellyfish-700: #8533E6;
+  --color-jellyfish-800: #6526AD;
+  --color-jellyfish-900: #451A73;
+
+  /* Accent - Seaweed Green */
+  --color-seaweed-050: #E6F9F0;
+  --color-seaweed-100: #B8F0DA;
+  --color-seaweed-200: #8AE7C4;
+  --color-seaweed-300: #5CDEAE;
+  --color-seaweed-400: #2BB673;
+  --color-seaweed-500: #24A063;
+  --color-seaweed-600: #1F8A54;
+  --color-seaweed-700: #1A7345;
+  --color-seaweed-800: #145636;
+  --color-seaweed-900: #0D3924;
+
+  /* Neutrals (same scale) */
+  --color-neutral-025: #F6FBFD;
+  --color-neutral-050: #EAF2F7;
+  --color-neutral-100: #D7E3EC;
+  --color-neutral-200: #B8C7D5;
+  --color-neutral-300: #8FA3B7;
+  --color-neutral-400: #6B7C8F;
+  --color-neutral-500: #516171;
+  --color-neutral-600: #3A4752;
+  --color-neutral-700: #2C3A47;
+  --color-neutral-800: #1E2A36;
+  --color-neutral-900: #0F1419;
+
+  /* Feedback - Dark Mode */
+  --color-success: #5CDEAE;
+  --color-success-bg: #0D3924;
+  --color-success-border: #1A7345;
+
+  --color-warning: #FFE066;
+  --color-warning-bg: #4D4307;
+  --color-warning-border: #A68F11;
+
+  --color-error: #FF6F6F;
+  --color-error-bg: #66141A;
+  --color-error-border: #CC2936;
+
+  --color-info: #70D1FF;
+  --color-info-bg: #0A3D5F;
+  --color-info-border: #1470B3;
+
+  /* Gradients (same) */
+  --gradient-sunlit-water: linear-gradient(135deg, #FFED8C 0%, #3DB5FF 100%);
+  --gradient-lagoon: linear-gradient(135deg, #1E9FED 0%, #C58CFF 100%);
+  --gradient-tropical: linear-gradient(135deg, #F7E21B 0%, #2BB673 100%);
+  --gradient-coral: linear-gradient(135deg, #FF6F6F 0%, #FFCC33 100%);
+
+  /* Semantic Tokens - Dark Mode */
+  --bg-primary: #0B1E3A;
+  --bg-secondary: #112A4B;
+  --bg-tertiary: #1A3454;
+  --bg-elevated: #1F3D5D;
+
+  --surface-primary: #112A4B;
+  --surface-secondary: #1A3454;
+  --surface-tertiary: #244667;
+  --surface-overlay: rgba(255, 255, 255, 0.08);
+
+  --text-primary: #EAF2F7;
+  --text-secondary: #B8C7D5;
+  --text-tertiary: #8FA3B7;
+  --text-inverse: #0B1E3A;
+  --text-on-primary: #0B1E3A;
+  --text-on-secondary: #FFFFFF;
+  --text-link: #70D1FF;
+  --text-link-hover: #99DEFF;
+
+  --border-primary: #3A4752;
+  --border-secondary: #516171;
+  --border-focus: #70D1FF;
+  --border-error: #FF6F6F;
+  --border-success: #5CDEAE;
+
+  /* Interactive States - Dark Mode */
+  --interactive-primary: #FFED8C;
+  --interactive-primary-hover: #FFF3B3;
+  --interactive-primary-active: #FFF9D9;
+  --interactive-primary-disabled: rgba(255, 237, 140, 0.4);
+
+  --interactive-secondary: #3DB5FF;
+  --interactive-secondary-hover: #70D1FF;
+  --interactive-secondary-active: #99DEFF;
+  --interactive-secondary-disabled: rgba(61, 181, 255, 0.4);
+
+  /* Focus Ring */
+  --focus-ring-color: #70D1FF;
+  --focus-ring-width: 2px;
+  --focus-ring-offset: 2px;
+  --focus-ring: 0 0 0 var(--focus-ring-width) var(--focus-ring-color);
+  --focus-ring-offset-shadow: 0 0 0 var(--focus-ring-offset) transparent;
+
+  /* Shadows - Dark Mode (lighter, more subtle) */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.4);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6), 0 10px 10px -5px rgba(0, 0, 0, 0.5);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+}
+
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+
+/* State Modifiers */
+.hover-darken {
+  transition: all 0.2s ease;
+}
+
+.hover-darken:hover {
+  filter: brightness(0.92);
+}
+
+.hover-lighten {
+  transition: all 0.2s ease;
+}
+
+.hover-lighten:hover {
+  filter: brightness(1.08);
+}
+
+.active-darken:active {
+  filter: brightness(0.88);
+}
+
+.active-lighten:active {
+  filter: brightness(1.12);
+}
+
+.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Focus States */
+.focus-ring:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring-offset-shadow), var(--focus-ring);
+}
+
+.focus-ring-inset:focus-visible {
+  outline: none;
+  box-shadow: inset var(--focus-ring);
+}
+
+/* Gradient Backgrounds */
+.bg-sunlit-water {
+  background: var(--gradient-sunlit-water);
+}
+
+.bg-lagoon {
+  background: var(--gradient-lagoon);
+}
+
+.bg-tropical {
+  background: var(--gradient-tropical);
+}
+
+.bg-coral {
+  background: var(--gradient-coral);
+}
+
+/* Feedback States */
+.success {
+  background-color: var(--color-success-bg);
+  border-color: var(--color-success-border);
+  color: var(--color-success);
+}
+
+.warning {
+  background-color: var(--color-warning-bg);
+  border-color: var(--color-warning-border);
+  color: var(--color-warning);
+}
+
+.error {
+  background-color: var(--color-error-bg);
+  border-color: var(--color-error-border);
+  color: var(--color-error);
+}
+
+.info {
+  background-color: var(--color-info-bg);
+  border-color: var(--color-info-border);
+  color: var(--color-info);
+}
