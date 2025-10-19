@@ -1,5 +1,9 @@
-# streamlit_app_LIVE.py - MAXIMUM SPONGEBOB EDITION 🧽🍍
+"""
+Bikini Bottom Current Classifier + Ocean Simulator
+Run: streamlit run streamlit_app_LIVE.py
+"""
 
+from live_data_fetcher import LiveOceanData
 import streamlit as st
 import torch
 import torch.nn as nn
@@ -11,282 +15,279 @@ import numpy as np
 import matplotlib.pyplot as plt
 from datetime import datetime
 import os
-import requests
-from io import BytesIO
+import warnings
+warnings.filterwarnings('ignore')
 
-from live_data_fetcher import LiveOceanData
 
 # Page config
 st.set_page_config(
     page_title="🧽 Bikini Bottom Current Classifier 🍍",
     page_icon="🧽",
     layout="wide",
-    initial_sidebar_state="collapsed",
-    menu_items={
-        'Get Help': None,
-        'Report a bug': None,
-        'About': "🌊 Bikini Bottom Current Classifier - OceanHack 2025 🍍"
-    }
+    initial_sidebar_state="collapsed"
 )
 
 # MAXIMUM SPONGEBOB CSS
 st.markdown("""
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Titan+One&family=Comic+Neue:wght@700&family=Fredoka+One&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap');
     
-    /* Force light ocean theme */
-    [data-theme="dark"] .stApp,
+    * {
+        font-family: 'Fredoka', sans-serif;
+    }
+    
+    /* Main background - darker, professional */
     .stApp {
-        background: linear-gradient(180deg, #87CEEB 0%, #4A90E2 30%, #2E5C8A 60%, #1a3a52 100%) !important;
-        background-attachment: fixed !important;
-    }
-
-    [data-theme="dark"] .stApp::before,
-    .stApp::before {
-        content: "";
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-image:
-            radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
-            radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.15) 0%, transparent 50%),
-            radial-gradient(circle at 40% 40%, rgba(255, 255, 255, 0.1) 0%, transparent 30%);
-        pointer-events: none;
-        z-index: 0;
-    }
-
-    .main .block-container {
-        position: relative;
-        z-index: 1;
+        background: linear-gradient(180deg, #1e3a5f 0%, #2d5a8c 50%, #1e3a5f 100%);
+        background-attachment: fixed;
     }
     
+    /* Main content background */
+    .main {
+        background: transparent;
+    }
+    
+    /* Main title */
     .main-title {
-        font-family: 'Titan One', cursive;
-        font-size: 5rem;
+        font-size: 4rem;
         text-align: center;
-        color: #FFD700;
-        text-shadow: 
-            4px 4px 0px #FF6347,
-            8px 8px 0px #FF1493,
-            12px 12px 20px rgba(0,0,0,0.5);
-        animation: bounce 2s infinite;
+        color: #FFFFFF;
+        font-weight: 700;
         margin-bottom: 0;
-        letter-spacing: 3px;
+        letter-spacing: 2px;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.3);
     }
     
-    @keyframes bounce {
-        0%, 100% { transform: translateY(0) rotate(-2deg); }
-        50% { transform: translateY(-20px) rotate(2deg); }
-    }
-    
+    /* Subtitle */
     .subtitle {
-        font-family: 'Comic Neue', cursive;
         text-align: center;
-        color: #FFD700;
-        font-size: 1.8rem;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
-        font-weight: bold;
+        color: #C5E9F0;
+        font-size: 1.4rem;
+        font-weight: 600;
         margin-bottom: 2rem;
     }
     
+    /* Cards - clean with proper contrast */
     .pineapple-card {
-        background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
-        border: 5px solid #8B4513;
-        border-radius: 20px;
+        background: linear-gradient(135deg, #2d5a8c 0%, #1e3a5f 100%);
+        border: 2px solid #4A90E2;
+        border-radius: 12px;
         padding: 1.5rem;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         text-align: center;
-        transform: rotate(-1deg);
-        transition: all 0.3s;
     }
     
     .pineapple-card:hover {
-        transform: rotate(1deg) scale(1.05);
+        box-shadow: 0 6px 16px rgba(74, 144, 226, 0.4);
+        border-color: #6CB4F5;
     }
     
+    /* Metric values - white for contrast */
     .metric-value {
-        font-family: 'Fredoka One', cursive;
-        font-size: 3rem;
-        color: #8B4513;
-        text-shadow: 2px 2px 0px #FFE4B5;
+        font-size: 2.5rem;
+        color: #FFFFFF;
+        font-weight: 700;
         margin: 0.5rem 0;
     }
     
     .metric-label {
-        font-family: 'Comic Neue', cursive;
-        color: #8B4513;
-        font-size: 1rem;
-        font-weight: bold;
+        color: #C5E9F0;
+        font-size: 0.85rem;
+        font-weight: 600;
         text-transform: uppercase;
+        letter-spacing: 1px;
     }
     
+    /* Buttons - solid and clear */
     .stButton>button {
-        font-family: 'Fredoka One', cursive;
-        background: linear-gradient(135deg, #FF69B4 0%, #FF1493 100%);
+        background: linear-gradient(135deg, #4A90E2 0%, #2E5C8A 100%);
         color: white;
-        border: 4px solid #8B008B;
-        padding: 1rem 2rem;
-        font-size: 1.5rem;
-        border-radius: 25px;
-        box-shadow: 0 8px 0 #8B008B, 0 12px 20px rgba(0,0,0,0.4);
+        border: none;
+        padding: 0.85rem 1.5rem;
+        font-size: 1.1rem;
+        border-radius: 8px;
+        font-weight: 600;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        transition: all 0.2s;
         width: 100%;
-        transition: all 0.1s;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
     }
     
     .stButton>button:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 12px 0 #8B008B, 0 16px 30px rgba(0,0,0,0.5);
+        background: linear-gradient(135deg, #6CB4F5 0%, #4A90E2 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(74, 144, 226, 0.4);
     }
     
     .stButton>button:active {
-        transform: translateY(4px);
-        box-shadow: 0 4px 0 #8B008B, 0 6px 10px rgba(0,0,0,0.3);
+        transform: translateY(0px);
     }
     
+    /* Badges */
     .jellfish-badge {
         display: inline-block;
         padding: 1rem 2rem;
-        border-radius: 30px;
-        font-family: 'Fredoka One', cursive;
-        font-size: 2rem;
-        border: 4px solid;
-        box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-        animation: float 3s ease-in-out infinite;
-    }
-    
-    @keyframes float {
-        0%, 100% { transform: translateY(0px) rotate(-2deg); }
-        50% { transform: translateY(-15px) rotate(2deg); }
+        border-radius: 25px;
+        font-size: 1.5rem;
+        font-weight: 700;
+        border: 2px solid;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     }
     
     .outflow-badge {
-        background: linear-gradient(135deg, #00FA9A 0%, #00CED1 100%);
+        background: linear-gradient(135deg, #00D9A3 0%, #00A877 100%);
         color: white;
-        border-color: #008B8B;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        border-color: #00C896;
     }
     
     .tides-badge {
-        background: linear-gradient(135deg, #4169E1 0%, #1E90FF 100%);
+        background: linear-gradient(135deg, #4A90E2 0%, #2E5C8A 100%);
         color: white;
-        border-color: #00008B;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        border-color: #6CB4F5;
     }
     
     .wind-badge {
-        background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
-        color: #8B4513;
-        border-color: #FF6347;
-        text-shadow: 2px 2px 4px rgba(255,255,255,0.5);
+        background: linear-gradient(135deg, #FFB84D 0%, #FF9500 100%);
+        color: white;
+        border-color: #FFD699;
+    }
+    
+    /* Info boxes */
+    .chum-bucket-box {
+        background: linear-gradient(135deg, #1a4d2e 0%, #2d6a47 100%);
+        border: 2px solid #4CAF50;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin: 1rem 0;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        color: #E8F5E9;
+    }
+    
+    .chum-bucket-box h3 {
+        color: #81C784;
+    }
+    
+    .chum-bucket-box p {
+        color: #C8E6C9;
     }
     
     .krusty-krab-box {
-        background: linear-gradient(135deg, #FF6347 0%, #FF4500 100%);
-        border: 5px solid #8B0000;
-        border-radius: 20px;
-        padding: 2rem;
+        background: linear-gradient(135deg, #5d1a1a 0%, #8b3a3a 100%);
+        border: 2px solid #E57373;
+        border-radius: 12px;
+        padding: 1.5rem;
         margin: 1rem 0;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-        font-family: 'Comic Neue', cursive;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        color: #FFEBEE;
     }
     
-    .chum-bucket-box {
-        background: linear-gradient(135deg, #98FB98 0%, #90EE90 100%);
-        border: 5px solid #228B22;
-        border-radius: 20px;
-        padding: 2rem;
-        margin: 1rem 0;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-        font-family: 'Comic Neue', cursive;
+    .krusty-krab-box h3 {
+        color: #FFCDD2;
     }
     
+    .krusty-krab-box p {
+        color: #FFCDD2;
+    }
+    
+    /* Headings */
     h1, h2, h3 {
-        font-family: 'Fredoka One', cursive;
-        color: #FFD700;
-        text-shadow: 3px 3px 6px rgba(0,0,0,0.7);
+        color: #FFFFFF;
+        font-weight: 700;
     }
     
+    h2 {
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    h3 {
+        font-size: 1.3rem;
+    }
+    
+    /* Tabs */
     .stTabs [data-baseweb="tab-list"] {
-        gap: 1rem;
+        gap: 0.5rem;
         background: transparent;
+        border: none;
     }
     
     .stTabs [data-baseweb="tab"] {
-        font-family: 'Fredoka One', cursive;
-        background: linear-gradient(135deg, #FF69B4 0%, #FF1493 100%);
-        border-radius: 15px;
-        padding: 1rem 2rem;
-        color: white;
-        border: 3px solid #8B008B;
-        font-size: 1.2rem;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        padding: 0.8rem 1.5rem;
+        color: #C5E9F0;
+        border: 2px solid #4A90E2;
+        font-size: 1rem;
+        font-weight: 600;
+        box-shadow: none;
     }
     
     .stTabs [aria-selected="true"] {
-        background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
-        color: #8B4513;
-        border-color: #FF6347;
-        transform: scale(1.1);
+        background: linear-gradient(135deg, #4A90E2 0%, #2E5C8A 100%);
+        color: white;
+        border-color: #6CB4F5;
     }
     
+    /* Sliders */
     .stSlider > div > div > div {
-        background: linear-gradient(135deg, #FF69B4 0%, #FF1493 100%);
+        background: linear-gradient(90deg, #4A90E2 0%, #2E5C8A 100%);
     }
     
-    /* Bubble decorations */
-    .bubble {
-        position: fixed;
-        background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8), rgba(255,255,255,0.3));
-        border-radius: 50%;
-        animation: rise 15s infinite ease-in;
-        pointer-events: none;
-        border: 2px solid rgba(255,255,255,0.5);
+    /* File uploader */
+    .stFileUploader {
+        background: rgba(45, 90, 140, 0.5);
+        border: 2px dashed #4A90E2;
+        border-radius: 12px;
+        padding: 2rem;
     }
     
-    @keyframes rise {
-        0% {
-            bottom: -100px;
-            opacity: 0;
-        }
-        50% {
-            opacity: 1;
-        }
-        100% {
-            bottom: 110%;
-            opacity: 0;
-        }
+    [data-testid="stFileUploadDropzone"] {
+        background: rgba(45, 90, 140, 0.6) !important;
+        border: 2px dashed #4A90E2 !important;
+        border-radius: 12px !important;
     }
     
+    [data-testid="stFileUploadDropzone"] > section > button {
+        color: #C5E9F0;
+    }
+    
+    /* Text inputs and selects */
     .stSelectbox > div > div {
-        background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
-        border: 3px solid #8B4513;
-        border-radius: 15px;
-        font-family: 'Comic Neue', cursive;
-        font-weight: bold;
+        background: rgba(30, 58, 95, 0.8);
+        border: 2px solid #4A90E2;
+        border-radius: 8px;
+        color: #FFFFFF;
     }
     
+    .stNumberInput > div > div > input {
+        background: rgba(30, 58, 95, 0.8);
+        border: 2px solid #4A90E2;
+        border-radius: 8px;
+        color: #FFFFFF;
+    }
+    
+    /* Text styling */
     .tartar-sauce {
-        font-family: 'Fredoka One', cursive;
-        color: #FF1493;
-        font-size: 1.5rem;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        color: #FFB84D;
+        font-size: 1.3rem;
         text-align: center;
         margin: 1rem 0;
+        font-weight: 600;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.3);
     }
+    
+    /* Dividers */
+    hr {
+        border: 1px solid #4A90E2;
+        margin: 1.5rem 0;
+        opacity: 0.5;
+    }
+    
+    /* General text color */
+    body, p, span, label {
+        color: #E8F4F8 !important;
+    }
+    
 </style>
-
-<!-- Floating Bubbles -->
-<div class="bubble" style="width: 40px; height: 40px; left: 10%; animation-delay: 0s;"></div>
-<div class="bubble" style="width: 60px; height: 60px; left: 30%; animation-delay: 3s;"></div>
-<div class="bubble" style="width: 30px; height: 30px; left: 50%; animation-delay: 6s;"></div>
-<div class="bubble" style="width: 50px; height: 50px; left: 70%; animation-delay: 9s;"></div>
-<div class="bubble" style="width: 35px; height: 35px; left: 85%; animation-delay: 12s;"></div>
-<div class="bubble" style="width: 45px; height: 45px; left: 20%; animation-delay: 2s;"></div>
-<div class="bubble" style="width: 55px; height: 55px; left: 60%; animation-delay: 7s;"></div>
-<div class="bubble" style="width: 38px; height: 38px; left: 80%; animation-delay: 10s;"></div>
 """, unsafe_allow_html=True)
 
 
@@ -343,46 +344,9 @@ st.markdown('''
 
 st.markdown("---")
 
-# Top Metrics - PINEAPPLE STYLE
-col1, col2, col3, col4 = st.columns(4)
-with col1:
-    st.markdown(f"""
-    <div class="pineapple-card">
-        <div class="metric-label">🎯 ACCURACY</div>
-        <div class="metric-value">{model_val_acc:.1f}%</div>
-        <div style="font-size: 0.9rem; color: #8B4513; font-weight: bold;">Barnacles!</div>
-    </div>
-    """, unsafe_allow_html=True)
-with col2:
-    st.markdown(f"""
-    <div class="pineapple-card">
-        <div class="metric-label">🧠 NEURONS</div>
-        <div class="metric-value">18.6M</div>
-        <div style="font-size: 0.9rem; color: #8B4513; font-weight: bold;">Brain Coral!</div>
-    </div>
-    """, unsafe_allow_html=True)
-with col3:
-    st.markdown(f"""
-    <div class="pineapple-card">
-        <div class="metric-label">⚡ TRAINING</div>
-        <div class="metric-value">35 min</div>
-        <div style="font-size: 0.9rem; color: #8B4513; font-weight: bold;">Lightning Fast!</div>
-    </div>
-    """, unsafe_allow_html=True)
-with col4:
-    st.markdown(f"""
-    <div class="pineapple-card">
-        <div class="metric-label">📊 SAMPLES</div>
-        <div class="metric-value">8,168</div>
-        <div style="font-size: 0.9rem; color: #8B4513; font-weight: bold;">Holy Shrimp!</div>
-    </div>
-    """, unsafe_allow_html=True)
-
-st.markdown("<br><br>", unsafe_allow_html=True)
-
-# TABS
-tab1, tab2, tab3 = st.tabs(
-    ["🍔 UPLOAD & CLASSIFY", "🔴 LIVE FROM THE REEF", "🏆 HALL OF FAME"])
+# TABS - NOW 4 TABS
+tab1, tab2, tab3, tab4 = st.tabs(
+    ["🍔 UPLOAD & CLASSIFY", "🔴 LIVE FROM THE REEF", "🌊 OCEAN SIMULATOR", "🏆 HALL OF FAME"])
 
 # ============================================
 # TAB 1: UPLOAD
@@ -407,6 +371,8 @@ with tab1:
 
         wind_speed = st.slider("💨 Wind Speed (km/h)", 0.0, 60.0,
                                10.0, 1.0, help="How hard is the wind blowing? 🌬️")
+        wind_direction = st.slider("🧭 Wind Direction (°)", 0, 360, 180, 5,
+                                   help="Direction the wind is coming FROM (0°=N, 90°=E, 180°=S, 270°=W) 🌍")
         fraser_level = st.slider(
             "🏞️ Fraser River (m)", 0.0, 1.0, 0.3, 0.05, help="Is the river running wild? 🏔️")
         tidal_level = st.slider("🌊 Tide Height (m)", 0.0,
@@ -419,19 +385,21 @@ with tab1:
         with col_b:
             pressure = st.number_input("🌡️ Pressure", 980, 1040, 1013, 5)
 
-        is_freshet = int(month in [5, 6, 7])
+        # Use actual discharge data to determine if freshet-like conditions
+        discharge_threshold = 0.5
+        is_freshet = int(fraser_level > discharge_threshold)
 
         if is_freshet:
             st.success(
-                "🌸 **SPRING FRESHET!** Gary says 'Meow!' (That means ELEVATED DISCHARGE!)")
+                f"🌸 **ELEVATED DISCHARGE!** Fraser Level: {fraser_level:.2f}m - High discharge detected! Freshet-like conditions! 🏔️")
         else:
-            st.info("❄️ **NORMAL FLOW** - Just another day in paradise! 🏖️")
+            st.info(
+                f"📉 **BASE FLOW** - Fraser Level: {fraser_level:.2f}m - Regular seasonal discharge 💧")
 
     st.markdown("<br>", unsafe_allow_html=True)
 
     if uploaded_file and st.button("🔍 I'M READY! CLASSIFY THIS CURRENT! 🔍", type="primary", use_container_width=True):
 
-        # Prepare image
         transform = transforms.Compose([
             transforms.Resize((224, 224)),
             transforms.ToTensor(),
@@ -439,15 +407,20 @@ with tab1:
         ])
         img_tensor = transform(image).unsqueeze(0)
 
-        # Env features
         env_tensor = torch.tensor([[
-            wind_speed / 60.0, 180.0 / 360.0, tidal_level / 6.0,
-            1.5 / 3.0, 0.0, fraser_level / 1.0,
-            pressure / 1050.0, 30.0 / 100.0, float(is_freshet),
-            wind_speed / 60.0, 1.5 / 3.0
+            wind_speed / 60.0,
+            wind_direction / 360.0,
+            tidal_level / 6.0,
+            1.5 / 3.0,
+            0.0,
+            fraser_level / 1.0,
+            pressure / 1050.0,
+            30.0 / 100.0,
+            float(is_freshet),
+            wind_speed / 60.0,
+            1.5 / 3.0
         ]], dtype=torch.float32)
 
-        # Predict
         with torch.no_grad():
             outputs = model(img_tensor, env_tensor)
             probs = torch.softmax(outputs, dim=1)[0]
@@ -455,18 +428,15 @@ with tab1:
             pred_label = inv_label_map[pred_idx]
             confidence = probs[pred_idx].item() * 100
 
-        # RESULTS
         st.markdown("<br>", unsafe_allow_html=True)
         st.markdown(
             '<p class="tartar-sauce">⭐ TARTAR SAUCE! HERE ARE YOUR RESULTS! ⭐</p>', unsafe_allow_html=True)
 
-        # Giant Badge
         badge_class = "outflow-badge" if pred_label == 'OUTFLOW' else "tides-badge" if pred_label == 'TIDES' else "wind-badge"
         emoji = "🏞️" if pred_label == 'OUTFLOW' else "🌊" if pred_label == 'TIDES' else "💨"
         st.markdown(
             f'<div style="text-align: center; margin: 2rem 0;"><span class="jellfish-badge {badge_class}">{emoji} {pred_label} {emoji}</span></div>', unsafe_allow_html=True)
 
-        # Metrics
         col1, col2, col3 = st.columns(3)
         with col1:
             st.markdown(f"""
@@ -478,19 +448,18 @@ with tab1:
         with col2:
             st.markdown(f"""
             <div class="pineapple-card">
-                <div class="metric-label">OUTFLOW</div>
-                <div class="metric-value">{probs[0].item()*100:.1f}%</div>
+                <div class="metric-label">🌊 TIDES</div>
+                <div class="metric-value">{probs[1].item()*100:.1f}%</div>
             </div>
             """, unsafe_allow_html=True)
         with col3:
             st.markdown(f"""
             <div class="pineapple-card">
-                <div class="metric-label">TIDES</div>
-                <div class="metric-value">{probs[1].item()*100:.1f}%</div>
+                <div class="metric-label">💨 WIND/STORM</div>
+                <div class="metric-value">{probs[2].item()*100:.1f}%</div>
             </div>
             """, unsafe_allow_html=True)
 
-        # Probability Chart - COLORFUL
         st.markdown("<br>", unsafe_allow_html=True)
         st.markdown("### 📊 PROBABILITY BREAKDOWN")
 
@@ -520,21 +489,22 @@ with tab1:
                     f'{width:.1f}%', ha='left', va='center', color='#8B4513', fontweight='bold', fontsize=13)
 
         st.pyplot(fig)
+        plt.close()
 
-        # INFO BOXES
         st.markdown("<br>", unsafe_allow_html=True)
 
         if pred_label == 'OUTFLOW':
             st.markdown(f"""
             <div class="chum-bucket-box">
-                <h3 style="color: #228B22; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">🏞️ FRASER RIVER OUTFLOW DETECTED!</h3>
+                <h3 style="color: #228B22;">🏞️ FRASER RIVER OUTFLOW DETECTED!</h3>
                 <p style="color: #006400; font-size: 1.2rem; font-weight: bold;">
                 Patrick says: "It's all that fresh water from the mountains!" 🏔️
                 </p>
                 <p style="color: #228B22; font-size: 1.1rem;">
-                <b>Fraser Level:</b> {fraser_level:.2f}m {'🌊 HIGH TIDE!' if fraser_level > 0.4 else '📉 Normal'}<br>
-                <b>Season:</b> {'🌸 SPRING FRESHET - Salmon Highway Open!' if is_freshet else '❄️ Regular Flow'}<br>
-                <b>Wind:</b> {wind_speed:.1f} km/h<br><br>
+                <b>Fraser Discharge Level:</b> {fraser_level:.2f}m {'🌊 ELEVATED!' if fraser_level > 0.5 else '📉 Baseline'}<br>
+                <b>Wind Direction:</b> {wind_direction}° 🧭<br>
+                <b>Wind Speed:</b> {wind_speed:.1f} km/h<br>
+                <b>Discharge Status:</b> {'🌸 High Freshet-like Conditions!' if fraser_level > 0.5 else '📉 Regular Base Flow'}<br><br>
                 <b>Why This Matters:</b> Salmon migration! 🐟 Estuarine management! Water quality monitoring! 💧
                 </p>
             </div>
@@ -543,28 +513,29 @@ with tab1:
         elif pred_label == 'TIDES':
             st.markdown(f"""
             <div class="krusty-krab-box">
-                <h3 style="color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">🌊 TIDAL FORCING DOMINANT!</h3>
+                <h3 style="color: white;">🌊 TIDAL FORCING DOMINANT!</h3>
                 <p style="color: #FFE4B5; font-size: 1.2rem; font-weight: bold;">
                 Squidward says: "It's basic lunar gravitational physics..." 🌙
                 </p>
                 <p style="color: white; font-size: 1.1rem;">
                 <b>Tide Height:</b> {tidal_level:.2f}m above the Krusty Krab floor 🦀<br>
-                <b>Wind:</b> {wind_speed:.1f} km/h (not interfering)<br>
+                <b>Wind:</b> {wind_speed:.1f} km/h (coming from {wind_direction}°)<br>
                 <b>Moon Phase:</b> Pulling the ocean like taffy! 🌕<br><br>
                 <b>Why This Matters:</b> Navigation timing! ⚓ Tidal energy! ⚡ Harbor operations! 🚢
                 </p>
             </div>
             """, unsafe_allow_html=True)
 
-        else:  # WIND/STORM
+        else:
             st.markdown(f"""
             <div class="krusty-krab-box">
-                <h3 style="color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">💨 WIND/STORM FORCING ACTIVE!</h3>
+                <h3 style="color: white;">💨 WIND/STORM FORCING ACTIVE!</h3>
                 <p style="color: #FFE4B5; font-size: 1.2rem; font-weight: bold;">
                 SpongeBob warns: "Batten down the hatches! Time to close the pineapple!" 🍍⛈️
                 </p>
                 <p style="color: white; font-size: 1.1rem;">
                 <b>Wind Speed:</b> {wind_speed:.1f} km/h {'⚠️ STORMY!' if wind_speed > 20 else '🌬️ Breezy'}<br>
+                <b>Wind Direction:</b> {wind_direction}° (coming from this direction) 🧭<br>
                 <b>Pressure:</b> {pressure} hPa {'⛈️ LOW PRESSURE!' if pressure < 1005 else '☀️ Fair Weather'}<br>
                 <b>Sea Conditions:</b> Choppy! Hold onto your spatula! 🍔<br><br>
                 <b>Why This Matters:</b> Search & rescue! 🚨 Oil spill response! 🛢️ Small craft warnings! ⚓
@@ -585,9 +556,13 @@ with tab2:
     if st.button("🔄 FETCH FRESH DATA! (Like Krabby Patties!) 🍔", type="primary", use_container_width=True):
         with st.spinner("🐌 Sending Gary to fetch the data..."):
             live_data = live_fetcher.get_all_live_data()
+            st.session_state.live_data = live_data
 
         st.success(
             f"✅ DATA RETRIEVED! Time: {live_data['timestamp'].strftime('%Y-%m-%d %H:%M UTC')}")
+
+    if 'live_data' in st.session_state:
+        live_data = st.session_state.live_data
 
         st.markdown("<br>", unsafe_allow_html=True)
 
@@ -635,53 +610,87 @@ with tab2:
             image = Image.open(uploaded_live).convert('RGB')
             st.image(image, use_container_width=True)
 
-            transform = transforms.Compose([
-                transforms.Resize((224, 224)),
-                transforms.ToTensor(),
-                transforms.Normalize([0.485, 0.456, 0.406], [
-                                     0.229, 0.224, 0.225])
-            ])
-            img_tensor = transform(image).unsqueeze(0)
+            if st.button("🔍 CLASSIFY THIS PLOT! 🔍", type="primary", use_container_width=True, key="live_classify"):
+                transform = transforms.Compose([
+                    transforms.Resize((224, 224)),
+                    transforms.ToTensor(),
+                    transforms.Normalize([0.485, 0.456, 0.406], [
+                                         0.229, 0.224, 0.225])
+                ])
+                img_tensor = transform(image).unsqueeze(0)
 
-            env_tensor = torch.tensor([[
-                live_data['wind_speed'] / 60.0, live_data['wind_dir'] / 360.0,
-                live_data['tidal_level'] /
-                6.0, abs(live_data['tidal_range']) / 3.0,
-                live_data['tidal_velocity'] /
-                1.0, live_data['fraser_level'] / 1.0,
-                live_data['pressure'] / 1050.0, 30.0 / 100.0,
-                float(live_data['is_spring_freshet']),
-                live_data['wind_speed'] /
-                60.0, abs(live_data['tidal_range']) / 3.0
-            ]], dtype=torch.float32)
+                discharge_threshold = 0.5
+                is_freshet = int(
+                    live_data['fraser_level'] > discharge_threshold)
 
-            with torch.no_grad():
-                outputs = model(img_tensor, env_tensor)
-                probs = torch.softmax(outputs, dim=1)[0]
-                pred_idx = torch.argmax(probs).item()
-                pred_label = inv_label_map[pred_idx]
-                confidence = probs[pred_idx].item() * 100
+                env_tensor = torch.tensor([[
+                    live_data['wind_speed'] / 60.0,
+                    live_data['wind_dir'] / 360.0,
+                    live_data['tidal_level'] / 6.0,
+                    abs(live_data['tidal_range']) / 3.0,
+                    live_data['tidal_velocity'] / 1.0,
+                    live_data['fraser_level'] / 1.0,
+                    live_data['pressure'] / 1050.0,
+                    30.0 / 100.0,
+                    float(is_freshet),
+                    live_data['wind_speed'] / 60.0,
+                    abs(live_data['tidal_range']) / 3.0
+                ]], dtype=torch.float32)
 
-            st.markdown("<br>", unsafe_allow_html=True)
-            badge_class = "outflow-badge" if pred_label == 'OUTFLOW' else "tides-badge" if pred_label == 'TIDES' else "wind-badge"
-            emoji = "🏞️" if pred_label == 'OUTFLOW' else "🌊" if pred_label == 'TIDES' else "💨"
-            st.markdown(
-                f'<div style="text-align: center;"><span class="jellfish-badge {badge_class}">{emoji} {pred_label} {emoji}</span></div>', unsafe_allow_html=True)
+                with torch.no_grad():
+                    outputs = model(img_tensor, env_tensor)
+                    probs = torch.softmax(outputs, dim=1)[0]
+                    pred_idx = torch.argmax(probs).item()
+                    pred_label = inv_label_map[pred_idx]
+                    confidence = probs[pred_idx].item() * 100
 
-            st.markdown("<br>", unsafe_allow_html=True)
+                st.markdown("<br>", unsafe_allow_html=True)
+                badge_class = "outflow-badge" if pred_label == 'OUTFLOW' else "tides-badge" if pred_label == 'TIDES' else "wind-badge"
+                emoji = "🏞️" if pred_label == 'OUTFLOW' else "🌊" if pred_label == 'TIDES' else "💨"
+                st.markdown(
+                    f'<div style="text-align: center;"><span class="jellfish-badge {badge_class}">{emoji} {pred_label} {emoji}</span></div>', unsafe_allow_html=True)
 
-            col1, col2, col3 = st.columns(3)
-            with col1:
-                st.metric("🎯 Confidence", f"{confidence:.1f}%")
-            with col2:
-                st.metric("🏞️ OUTFLOW", f"{probs[0].item()*100:.1f}%")
-            with col3:
-                st.metric("🌊 TIDES", f"{probs[1].item()*100:.1f}%")
+                st.markdown("<br>", unsafe_allow_html=True)
+
+                col1, col2, col3 = st.columns(3)
+                with col1:
+                    st.metric("🎯 Confidence", f"{confidence:.1f}%")
+                with col2:
+                    st.metric("🌊 TIDES", f"{probs[1].item()*100:.1f}%")
+                with col3:
+                    st.metric("💨 WIND/STORM", f"{probs[2].item()*100:.1f}%")
+    else:
+        st.info("👆 Click the button above to fetch fresh live data first!")
 
 # ============================================
-# TAB 3: PERFORMANCE
+# TAB 3: OCEAN SIMULATOR (EMBEDDED)
 # ============================================
 with tab3:
+    st.markdown('<h2 style="text-align: center;">🌊 OCEAN CURRENT SIMULATOR 🌊</h2>',
+                unsafe_allow_html=True)
+    st.markdown('<p style="text-align: center; font-size: 1.1rem; color: #FFD700;">Interactive visualization of ocean currents and dynamics</p>', unsafe_allow_html=True)
+
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    st.components.v1.iframe(
+        src="https://udbhav25kansal.github.io/Ocean-current-simulator/",
+        height=800,
+        scrolling=True
+    )
+
+    st.markdown("<br><br>", unsafe_allow_html=True)
+    st.info("""
+    🌍 **Ocean Current Simulator Features:**
+    - Interactive visualization of surface currents
+    - Seasonal variations
+    
+    [Open in new tab](https://udbhav25kansal.github.io/Ocean-current-simulator/)
+    """)
+
+# ============================================
+# TAB 4: PERFORMANCE
+# ============================================
+with tab4:
     st.markdown('<h2 style="text-align: center;">🏆 HALL OF FAME - MODEL PERFORMANCE 🏆</h2>',
                 unsafe_allow_html=True)
 
@@ -710,7 +719,7 @@ with tab3:
             <b>Architecture:</b> EfficientNet-B4 + Multi-Modal Fusion 🧠<br>
             <b>GPU:</b> NVIDIA H200 (150GB HBM3) 🖥️<br>
             <b>Training Time:</b> 35 minutes ⚡<br>
-            <b>Framework:</b> PyTorch 2.5.1 🔥
+            <b>Framework:</b> PyTorch 2.5.1 🔥<br>
             </p>
         </div>
         """, unsafe_allow_html=True)
@@ -722,7 +731,7 @@ with tab3:
             <p style="color: #FFE4B5; font-size: 1.1rem;">
             <b>Total Samples:</b> 8,168 plots 📊<br>
             <b>Timespan:</b> 2 years (2023-2025) 📅<br>
-            <b>Resolution:</b> Hourly ⏰<br><br>
+            <b>Resolution:</b> 2 Hours ⏰<br><br>
             <b>Class Distribution:</b><br>
             🏞️ OUTFLOW: 7.0% (572)<br>
             🌊 TIDES: 40.9% (3,338)<br>
@@ -731,7 +740,6 @@ with tab3:
         </div>
         """, unsafe_allow_html=True)
 
-    # Example Gallery
     if test_results is not None:
         st.markdown("<br><br>", unsafe_allow_html=True)
         st.markdown(
@@ -768,8 +776,8 @@ st.markdown("<br><br><br>", unsafe_allow_html=True)
 st.markdown("""
 <div style='text-align: center; font-size: 1.5rem; color: #FFD700; font-family: "Fredoka One", cursive; text-shadow: 3px 3px 6px rgba(0,0,0,0.7);'>
     <p>🌊 F IS FOR FRIENDS WHO CLASSIFY CURRENTS TOGETHER! 🌊</p>
-    <p style="font-size: 1.2rem;">⚓ OceanHack 2025⚓</p>
-    <p style="font-size: 1rem;">🧽 The Bikini Bottom Team🍍</p>
+    <p style="font-size: 1.2rem;">⚓ OceanHack 2025 • BC ⚓</p>
+    <p style="font-size: 1rem;">🧽Team Spongebob</p>
     <p style="font-size: 0.9rem; font-style: italic;">"The inner machinations of my mind are an enigma." - Patrick Star, Data Scientist 🌟</p>
 </div>
 """, unsafe_allow_html=True)
