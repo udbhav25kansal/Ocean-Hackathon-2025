@@ -743,8 +743,8 @@ st.markdown("<br><br><br>", unsafe_allow_html=True)
 st.markdown("""
 <div style='text-align: center; font-size: 1.5rem; color: #FFD700; font-family: "Fredoka One", cursive; text-shadow: 3px 3px 6px rgba(0,0,0,0.7);'>
     <p>🌊 F IS FOR FRIENDS WHO CLASSIFY CURRENTS TOGETHER! 🌊</p>
-    <p style="font-size: 1.2rem;">⚓ OceanHack 2024 • Brest, France ⚓</p>
-    <p style="font-size: 1rem;">🧽 Noel John | Northeastern University Vancouver 🍍</p>
+    <p style="font-size: 1.2rem;">⚓ OceanHack 2025⚓</p>
+    <p style="font-size: 1rem;">🧽 The Bikini Bottom Team🍍</p>
     <p style="font-size: 0.9rem; font-style: italic;">"The inner machinations of my mind are an enigma." - Patrick Star, Data Scientist 🌟</p>
 </div>
 """, unsafe_allow_html=True)

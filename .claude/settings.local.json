@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add -A)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nUpdate project for OceanHack 2025 and clean up old files\n\n- Update app footer to reflect OceanHack 2025 and Bikini Bottom Team\n- Remove duplicate and old demo PNG files\n- Add new model file (best_model_OPTION3.pth) and plot directory\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
